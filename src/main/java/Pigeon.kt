@@ -1,3 +1,4 @@
+import io.reactivex.Observable
 import org.apache.commons.mail.EmailAttachment
 import org.apache.commons.mail.MultiPartEmail
 import java.io.File
@@ -27,9 +28,7 @@ class Pigeon {
     private var subject: String? = null
     private var content: String? = null
     private lateinit var attachments: List<Attachment>
-
-    fun send() {
-
+    fun send(): String {
         val mail = MultiPartEmail()
         mail.hostName = host
         mail.isSSLOnConnect = sll
@@ -58,9 +57,22 @@ class Pigeon {
             attachment.name = MimeUtility.encodeWord(finalName, MimeUtility.getDefaultJavaCharset(), "B")
             mail.attach(attachment)
         }
+        return mail.send()
+    }
 
-        mail.send()
+    fun toObservable(): Observable<String> = Observable.create<String> { emitter ->
+        emitter.onNext(send())
+        emitter.onComplete()
+    }
 
+    open class Callback {
+        open fun onSuccess() {
+
+        }
+
+        open fun onError(it: Throwable) {
+
+        }
     }
 
     data class Attachment(val file: File, val name: String? = null, val disposition: String = EmailAttachment.ATTACHMENT, val description: String? = null)
