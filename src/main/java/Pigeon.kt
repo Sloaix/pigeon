@@ -15,7 +15,7 @@ import javax.mail.internet.MimeUtility
  * Mailing for human beings.
  *
  */
-class Pigeon {
+open class Pigeon {
     private var sll: Boolean = false
     private var host: String? = null
     private var port: Int? = null
