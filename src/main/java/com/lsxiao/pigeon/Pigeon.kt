@@ -1,3 +1,5 @@
+package com.lsxiao.pigeon
+
 import io.reactivex.Observable
 import org.apache.commons.mail.EmailAttachment
 import org.apache.commons.mail.MultiPartEmail
